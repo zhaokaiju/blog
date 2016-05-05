@@ -4,10 +4,11 @@ categories:
 keywords:
 - 王阳明
 - 阳明心学
+- 知行合一王阳明
 tags:
 - 心学
 date: 2015-12-25T16:30:15+08:00
-title: 阳明心学
+title: 知行合一王阳明
 url: 2015/12/25/reading_wang_yang_ming/
 ---
 ##### 前言
