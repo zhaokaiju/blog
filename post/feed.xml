@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on 月光の云海</title>
+        <link>http://www.zhaokaiju.com/post/</link>
+        <language>zh-CN</language>
+        <author>zhaokaiju</author>
+        <rights>Copyright (c) 2015-2016, zhaokaiju all rights reserved.</rights>
+        <updated>Fri, 22 Apr 2016 19:27:15 &#43;0800</updated>
+        
+        <item>
+            <title>浅谈对接支付系统</title>
+            <link>http://www.zhaokaiju.com/2016/04/22/technology_learning_docking_payment_system/</link>
+            <pubDate>Fri, 22 Apr 2016 19:27:15 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/2016/04/22/technology_learning_docking_payment_system/</guid>
+            <description>
+
+&lt;h4 id=&#34;前言:c96a52ac494cc06f8613655b64c416a4&#34;&gt;前言&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;工作中平台需要对接不同厂家的支付系统，以自己喜欢的方式整理好自己对，对接支付系统的理解，并形成相应的文档，在这里分享给大家，也便于自己日后继续学习。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;一-支付系统交易方式:c96a52ac494cc06f8613655b64c416a4&#34;&gt;一、支付系统交易方式&lt;/h5&gt;
+
+&lt;p&gt;支付系统的交易方式分为以下两种：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;同步交易&lt;/li&gt;
+&lt;li&gt;异步交易&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h6 id=&#34;1-同步交易:c96a52ac494cc06f8613655b64c416a4&#34;&gt;1、同步交易&lt;/h6&gt;
+
+&lt;p&gt;客户端发起交易请求，服务端即时响应，并返回响应的结果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;优点：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;实时性强&lt;/li&gt;
+&lt;li&gt;易于理解、开发和对接&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;缺点：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;实现的要求高（对网络、软件等要求高，不太现实）&lt;/li&gt;
+&lt;li&gt;容错性差&lt;/li&gt;
+&lt;li&gt;不易于维护&lt;/li&gt;
+&lt;li&gt;并发能力不足&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;2-异步交易:c96a52ac494cc06f8613655b64c416a4&#34;&gt;2、异步交易&lt;/h6&gt;
+
+&lt;p&gt;客户端发起交易请求，服务端即时响应其请求的是否成功，至于交易处理结果通过客户端请求时发送的URL进行规则性通知，从而将响应的结果通知到客户端。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;优点：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;对网络、软件等要求相对同步交易要低不少&lt;/li&gt;
+&lt;li&gt;容错性高&lt;/li&gt;
+&lt;li&gt;开发灵活&lt;/li&gt;
+&lt;li&gt;易于维护&lt;/li&gt;
+&lt;li&gt;便于开发出并发能力好的软件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;缺点：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;实时性相比同步交易来说要差一些&lt;/li&gt;
+&lt;li&gt;开发难度较高&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;二-对接支付系统:c96a52ac494cc06f8613655b64c416a4&#34;&gt;二、对接支付系统&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-对接支付系统的简化图:c96a52ac494cc06f8613655b64c416a4&#34;&gt;1、对接支付系统的简化图&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftechnology%2Ftechnology_learning_docking_payment_system1.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;2-对接支付系统的基本策略:c96a52ac494cc06f8613655b64c416a4&#34;&gt;2、对接支付系统的基本策略&lt;/h6&gt;
+
+&lt;p&gt;&lt;strong&gt;基本策略：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;金融性交易采用异步交易方式&lt;/li&gt;
+&lt;li&gt;非金融性交易采用同步交易方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;金融性交易&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;简单的理解就是和钱相关的交易（如支付）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;非金融性交易&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;简单的理解就是和钱没有直接关系的交易（如实名认证）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;3-对接支付系统过程:c96a52ac494cc06f8613655b64c416a4&#34;&gt;3、对接支付系统过程&lt;/h6&gt;
+
+&lt;p&gt;交易请求，存在以下三种状态：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;成功&lt;/li&gt;
+&lt;li&gt;失败&lt;/li&gt;
+&lt;li&gt;未知（un-know）状态&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通过API对接第三方支付系统，交易请求时，根据第三方支付系统返回状态进行相应处理：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;返回成功状态：平台处理交易请求成功的业务逻辑。&lt;/li&gt;
+&lt;li&gt;返回失败状态：平台处理交易请求失败的业务逻辑。&lt;/li&gt;
+&lt;li&gt;返回未知（un-know）状态：平台可以通过交易订单号，主动通过API查询第三方支付系统中该交易的状态，可以制定主动查询的规则（如每隔一段时间，查询一次，如果还是未知状态，则进行每隔一段时间查询，直到超过平台规定的最大查询次数，平台再默认将其设置为失败状态[查询规则如： 最大查询次数为3次，第一次延迟1分钟查询，第二次延迟3分钟再查询，第三次延迟5分钟查询]）。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果第三方支付系统既提供同步交易又提供异步交易接口，我们可以按照对接支付系统的基本策略（金融性交易采用异步交易方式，非金融性交易采用同步交易方式）去实现。&lt;/p&gt;
+
+&lt;p&gt;如果第三方支付系统只提供同步交易的话，对于金融性交易我们需要自己模拟实现异步交易的方式（先使用同步交易方式请求，如果结果为未知状态，主动通过API查询第三方支付系统中该交易的状态，再根据返回状态处理相应的业务逻辑。可以根据平台的自身业务制定根据查询规则处理该交易）。&lt;/p&gt;
+
+&lt;h5 id=&#34;三-对支付系统的期待:c96a52ac494cc06f8613655b64c416a4&#34;&gt;三、对支付系统的期待&lt;/h5&gt;
+
+&lt;p&gt;第三方支付系统对接API没有统一的标准，差异化大。有些支付系统在金融性交易API中没有提供异步交易的方式，导致对接开发难度大。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对支付系统的期待&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;形成统一的API标准，各厂商的API差异化尽可能的小&lt;/li&gt;
+&lt;li&gt;第三方支付系统对接API既提供同步交易的方式又提供异步交易的方式，方便别的平台灵活对接&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;后续:c96a52ac494cc06f8613655b64c416a4&#34;&gt;后续&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果你有更多更好的&lt;strong&gt;对接支付系统&lt;/strong&gt;方法和经验，可以通过发邮件至zhaokaiju@foxmail.com或者直接关注我微信公众号（&lt;strong&gt;zhaokaiju&lt;/strong&gt;）分享给我，谢谢!&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>个人时间管理实践</title>
+            <link>http://www.zhaokaiju.com/2016/03/13/thinking_personal_time_management_practice/</link>
+            <pubDate>Sun, 13 Mar 2016 20:49:15 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/2016/03/13/thinking_personal_time_management_practice/</guid>
+            <description>
+
+&lt;h5 id=&#34;前言:b0ad573dfd34deaadff3512e551c153a&#34;&gt;前言&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;经过一段时间的个人时间管理实践，个人工作效率有所提升，今天以自己喜欢的方式将我的个人时间管理实践经验，在这里分享给大家，也方便自己日后继续学习、实践和改进。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;一-我的时间管理思路:b0ad573dfd34deaadff3512e551c153a&#34;&gt;一、我的时间管理思路&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;确定好个人5年计划&lt;/li&gt;
+&lt;li&gt;确定好个人年度目标&lt;/li&gt;
+&lt;li&gt;确定好个人季度目标&lt;/li&gt;
+&lt;li&gt;确定好实现目标的行动方案&lt;/li&gt;
+&lt;li&gt;将行动方案中的行动项细化落实到每天的日常工作和生活中&lt;/li&gt;
+&lt;li&gt;将行动项目放入收纳箱中&lt;/li&gt;
+&lt;li&gt;根据自己在这个时间段的个人价值观，将行动项按四象限原则进行划分&lt;/li&gt;
+&lt;li&gt;确定好每个行动项的开始和结束时间&lt;/li&gt;
+&lt;li&gt;使用番茄工作法，每日优先将重要且紧急的事情做完，然后重点做重要但不紧急的事情&lt;/li&gt;
+&lt;li&gt;每晚通过心灵日记的形式进行回顾和总结&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;二-番茄工作法:b0ad573dfd34deaadff3512e551c153a&#34;&gt;二、番茄工作法&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-步骤:b0ad573dfd34deaadff3512e551c153a&#34;&gt;1、步骤&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;每天开始的时候规划今天要完成的几项任务，将任务逐项写在日列表里（如日事清的四象限中）&lt;/li&gt;
+&lt;li&gt;设定你的番茄钟（定时器、软件[如reliak-timer、番茄土豆、focus booster]、闹钟等），时间是25分钟&lt;/li&gt;
+&lt;li&gt;开始完成第一项任务，直到番茄钟响铃或提醒（25分钟到）&lt;/li&gt;
+&lt;li&gt;停止工作，并在列表里该项任务后画个X&lt;/li&gt;
+&lt;li&gt;休息3~5分钟，活动、喝水、方便等等&lt;/li&gt;
+&lt;li&gt;开始下一个番茄钟，继续该任务。一直循环下去，直到完成该任务，并在列表里将该任务划掉&lt;/li&gt;
+&lt;li&gt;每四个番茄钟后，休息25分钟&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;2-注意事项:b0ad573dfd34deaadff3512e551c153a&#34;&gt;2、注意事项&lt;/h6&gt;
+
+&lt;p&gt;在某个番茄钟的过程里，如果突然想起要做什么事情：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;非得马上做不可的话，停止这个番茄钟并宣告它作废（哪怕还剩5分钟就结束了），去完成这件事情，之后再重新开始同一个番茄钟&lt;/li&gt;
+&lt;li&gt;不是必须马上去做的话，在列表里该项任务后面标记一个逗号（表示打扰），并将这件事记在另一个列表里（比如叫“计划外事件”），然后接着完成这个番茄钟&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;三-个人时间管理工具:b0ad573dfd34deaadff3512e551c153a&#34;&gt;三、个人时间管理工具&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-番茄工作法实践工具:b0ad573dfd34deaadff3512e551c153a&#34;&gt;1、番茄工作法实践工具&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://pomotodo.com/&#34;&gt;番茄土豆&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.focusboosterapp.com/&#34;&gt;focus booster&lt;/a&gt;（推荐使用）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/reliak/reliak-timer&#34;&gt;reliak-timer&lt;/a&gt;，&lt;a href=&#34;http://sourceforge.net/projects/reliak-timer/files/ReliakTimer-1.0/&#34;&gt;reliak-timer安装包&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;2-工作计划和工作日志记录工具:b0ad573dfd34deaadff3512e551c153a&#34;&gt;2、工作计划和工作日志记录工具&lt;/h6&gt;
+
+&lt;p&gt;（1）&lt;a href=&#34;https://www.rishiqing.com&#34;&gt;日事清&lt;/a&gt;（刚开始进行时间管理推荐使用）:&lt;/p&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fthinking%2Fthinking_personal_time_management_practice1.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;p&gt;（2）&lt;a href=&#34;http://note.youdao.com/&#34;&gt;有道云笔记&lt;/a&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;四-心灵日记模板:b0ad573dfd34deaadff3512e551c153a&#34;&gt;四、心灵日记模板&lt;/h5&gt;
+
+&lt;p&gt;我采用了日事清工作日志模板中的项，具体模板如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;第一个五年（2016-2020）计划目标：
+
+1. 目标1
+2. 目标2
+
+2016年度目标：
+
+1. 目标1
+2. 目标2
+
+2016年第2季度目标：
+
+1. 目标1
+2. 目标2
+
+一、今天完成的事情
+
+1. 完成的事情1（耗时 1小时）
+2. 完成的事情2（耗时 1.5小时）
+
+二、遇到的问题
+
+1. 遇到的问题1
+2. 遇到的问题2
+
+三、准备尝试的措施
+
+1. 准备尝试的措施1
+2. 准备尝试的措施2
+
+四、今天未完成的事情
+
+1. 未完成的事情1（耗时 1小时， 完成20%）
+2. 未完成的事情2（耗时 2小时， 完成80%）
+
+五、明天的任务
+
+1. 明天的任务1
+2. 明天的任务2
+
+六、思考感悟和总结
+
+1. 思考感悟和总结1
+2. 思考感悟和总结2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;五-个人时间管理实践的书籍:b0ad573dfd34deaadff3512e551c153a&#34;&gt;五、个人时间管理实践的书籍&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.cn/%E5%B0%8F%E5%BC%BA%E5%8D%87%E8%81%8C%E8%AE%B0-%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86%E6%95%85%E4%BA%8B%E4%B9%A6-%E9%82%B9%E9%91%AB/dp/B00J3G8892/ref=sr_1_1?ie=UTF8&amp;amp;qid=1457877032&amp;amp;sr=8-1&amp;amp;keywords=%E5%B0%8F%E5%BC%BA%E5%8D%87%E8%81%8C%E8%AE%B0&#34;&gt;小强升职记:时间管理故事书(升级版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.cn/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF-%E5%8F%B2%E8%92%82%E8%8A%AC%C2%B7%E6%9F%AF%E7%BB%B4/dp/B00OOLUCAY/ref=sr_1_1?ie=UTF8&amp;amp;qid=1457877149&amp;amp;sr=8-1&amp;amp;keywords=%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF&#34;&gt;高效能人士的七个习惯&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.amazon.cn/%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B-%E6%9D%8E%E7%AC%91%E6%9D%A5/dp/B00FU3CRZI/ref=sr_1_3?ie=UTF8&amp;amp;qid=1462343203&amp;amp;sr=8-3&amp;amp;keywords=%E6%97%B6%E9%97%B4%E7%9A%84%E6%9C%8B%E5%8F%8B&#34;&gt;把时间当作朋友&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;六-个人心得:b0ad573dfd34deaadff3512e551c153a&#34;&gt;六、个人心得&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;番茄工作法的间隔时间可以根据自己的实际情况设定（如上午每个番茄工作法时间设置为40分钟，下午设置为25分钟）&lt;/li&gt;
+&lt;li&gt;心灵日记可以使用模板，将5年计划、年度目标、季度目标写到最前面，每天进行回顾和总结的时候，就能够不断地加强自己潜意识&lt;/li&gt;
+&lt;li&gt;如果比较注重心灵日记的隐私，可以将其保持到自己信的过的云存储中（我个人偏向使用360云盘，具有保险箱功能，产品简洁实用，用户体验好，安全系数高）&lt;/li&gt;
+&lt;li&gt;个人时间管理刚开始实践时，需要严格要求自己执行，也可以通过打卡的方式让他人监督自己&lt;/li&gt;
+&lt;li&gt;通过时间管理工具可以帮助自己养成良好的时间管理习惯，精进自己，分享他人&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;后续:b0ad573dfd34deaadff3512e551c153a&#34;&gt;后续&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果你有更多更好的&lt;strong&gt;个人时间管理实践&lt;/strong&gt;经验，可以发邮件至&lt;a href=&#34;zhaokaiju@foxmail.com&#34;&gt;zhaokaiju@foxmail.com&lt;/a&gt;或者直接关注我微信公众号（&lt;strong&gt;zhaokaiju&lt;/strong&gt;）分享给我，谢谢!&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>徽杭古道徒步</title>
+            <link>http://www.zhaokaiju.com/2016/03/13/travel_sports_hui_hang_road_hiking_trail/</link>
+            <pubDate>Sun, 13 Mar 2016 17:07:15 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/2016/03/13/travel_sports_hui_hang_road_hiking_trail/</guid>
+            <description>
+
+&lt;h5 id=&#34;前言:98431e53babc67805cd25f75eb8dcca2&#34;&gt;前言&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;周六和几个小伙伴，一行四人去徽杭古道徒步，今天带着全身略微的酸痛，以自己喜欢的方式将我们的徒步经验记录下来，分享给大家。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;一-基本行程路线:98431e53babc67805cd25f75eb8dcca2&#34;&gt;一、基本行程路线&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;杭州西站 乘坐大巴（77元/人） 到安徽绩溪县&lt;/li&gt;
+&lt;li&gt;绩溪县 乘坐班车（10元/人） 到 伏岭镇&lt;/li&gt;
+&lt;li&gt;伏岭镇 江南第一关处（游客中心） 购票（68元/张），然后开始徽杭古道徒步&lt;/li&gt;
+&lt;li&gt;路过 蓝天凹（不错的景点）&lt;/li&gt;
+&lt;li&gt;终点到 永来村（游客中心）&lt;/li&gt;
+&lt;li&gt;永来村 包车（450元） 回杭州西站&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;二-徒步准备:98431e53babc67805cd25f75eb8dcca2&#34;&gt;二、徒步准备&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-食物:98431e53babc67805cd25f75eb8dcca2&#34;&gt;1、食物&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;士力架&lt;/li&gt;
+&lt;li&gt;牛肉干&lt;/li&gt;
+&lt;li&gt;葡萄干&lt;/li&gt;
+&lt;li&gt;红牛&lt;/li&gt;
+&lt;li&gt;矿泉水&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;2-其他:98431e53babc67805cd25f75eb8dcca2&#34;&gt;2、其他&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;挑战自我的毅力和勇气&lt;/li&gt;
+&lt;li&gt;节奏感强的音乐&lt;/li&gt;
+&lt;li&gt;登山杖&lt;/li&gt;
+&lt;li&gt;单反&lt;/li&gt;
+&lt;li&gt;充电宝&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;三-景区亮点:98431e53babc67805cd25f75eb8dcca2&#34;&gt;三、景区亮点&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;微商的历史文化&lt;/li&gt;
+&lt;li&gt;体验杰出人士走过的路（古徽州第一伟人汪华、抗倭名臣胡宗宪、红顶商人胡雪岩、一代文豪胡适、微商胡炳衡）&lt;/li&gt;
+&lt;li&gt;驴友徒步基地&lt;/li&gt;
+&lt;li&gt;蓝天凹&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;四-徒步过程:98431e53babc67805cd25f75eb8dcca2&#34;&gt;四、徒步过程&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-景区路线图:98431e53babc67805cd25f75eb8dcca2&#34;&gt;1、景区路线图&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftravel_sports%2Ftravel_sports_hui_hang_road_hiking_trail1.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;2-风景展示:98431e53babc67805cd25f75eb8dcca2&#34;&gt;2、风景展示&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;大伙开起逗逼模式，边说边笑边扯淡，边看风景
+&lt;br&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftravel_sports%2Ftravel_sports_hui_hang_road_hiking_trail2.jpg&#34;/&gt;&lt;/li&gt;
+&lt;li&gt;非常感谢摆摊的大叔，热心卧倒帮我拍的照片
+&lt;br&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftravel_sports%2Ftravel_sports_hui_hang_road_hiking_trail3.jpg&#34;/&gt;
+&lt;br&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftravel_sports%2Ftravel_sports_hui_hang_road_hiking_trail4.jpg&#34;/&gt;&lt;/li&gt;
+&lt;li&gt;蓝天凹的美景
+&lt;br&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftravel_sports%2Ftravel_sports_hui_hang_road_hiking_trail6.jpg&#34;/&gt;
+&lt;br&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftravel_sports%2Ftravel_sports_hui_hang_road_hiking_trail9.jpg&#34;/&gt;&lt;/li&gt;
+&lt;li&gt;路过永乐村，从安徽省走到浙江省，我们竟然完成了一次跨省徒步，good job，整个徽杭古道历时4个多小时&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;后续:98431e53babc67805cd25f75eb8dcca2&#34;&gt;后续&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;平时周末还是得多出去徒步，贴近自然，放松放松心情。如果你有更多更好的&lt;strong&gt;徽杭古道徒步&lt;/strong&gt;经验，可以发邮件至&lt;a href=&#34;zhaokaiju@foxmail.com&#34;&gt;zhaokaiju@foxmail.com&lt;/a&gt;或者直接关注我微信公众号（&lt;strong&gt;zhaokaiju&lt;/strong&gt;）分享给我，谢谢!&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>十二道湘味</title>
+            <link>http://www.zhaokaiju.com/2016/02/16/craft_lao_zhao_twelve_xiang_wei/</link>
+            <pubDate>Tue, 16 Feb 2016 21:00:15 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/2016/02/16/craft_lao_zhao_twelve_xiang_wei/</guid>
+            <description>
+
+&lt;h5 id=&#34;前言:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;前言&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;最近几个月喜欢捣腾下厨艺，特意自学了十二道湘菜，今天在这里记录下来，将其分享给大家，也便于自己日后继续学习和改进做法。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;十二道湘味:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;十二道湘味&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-湖南烟熏牛肉:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;1、湖南烟熏牛肉&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34;  src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_hunan_smoked_beef5.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;2-湘西腊肉:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;2、湘西腊肉&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_xiangxi_bacon7.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;3-猪血丸子炒肉:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;3、猪血丸子炒肉&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_pig_balls5.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;4-香辣牙签牛肉:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;4、香辣牙签牛肉&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_toothpick_beef_5.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;5-宝庆香辣鸡:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;5、宝庆香辣鸡&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_shaoyang_spicy_chicken8.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;6-孜然排骨:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;6、孜然排骨&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_cumin_ribs4.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;7-剁椒鱼头:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;7、剁椒鱼头&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image/blog/craft/craft_chop_bell_pepper_fish_head2.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;8-肉末红薯粉:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;8、肉末红薯粉&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_meat_sweet_potato_powder4.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;9-湖南蛋:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;9、湖南蛋&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_hunan_eggs4.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;10-湘味排骨:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;10、湘味排骨&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image/blog/craftcraft_xiangwei_ribs_9.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;11-香辣虾:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;11、香辣虾&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_home_cooking6.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;12-玉米排骨汤:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;12、玉米排骨汤&lt;/h6&gt;
+
+&lt;p&gt;&lt;img width=&#34;72%&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Fcraft%2Fcraft_home_cooking14.jpg&#34;/&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;后记:378e512e3cc65e9ba6c48d026fbee253&#34;&gt;后记&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如你有更多更好的&lt;strong&gt;特色湘味菜&lt;/strong&gt;，请发邮件至&lt;a href=&#34;zhaokaiju@foxmail.com&#34;&gt;zhaokaiju@foxmail.com&lt;/a&gt;或者直接关注我微信公众号（&lt;strong&gt;zhaokaiju&lt;/strong&gt;）分享给我，谢谢!&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>趁早精神</title>
+            <link>http://www.zhaokaiju.com/2016/01/30/comprehensive_study_shape_your_life/</link>
+            <pubDate>Sat, 30 Jan 2016 15:12:15 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/2016/01/30/comprehensive_study_shape_your_life/</guid>
+            <description>
+
+&lt;h5 id=&#34;前言:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;前言&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;2015年6月通过观看潇洒姐&lt;a href=&#34;http://v.youku.com/v_show/id_XMTI2NDUyMzQ2MA==.html?from=y1.7-2&#34;&gt;《王潇：国内第一大女性励志社群的成功诀窍》&lt;/a&gt;的优酷视频才接触到趁早精神，今天再结合潇洒姐的&lt;a href=&#34;http://blog.sina.com.cn/s/blog_3d5875d70100dmhf.html&#34;&gt;《写在三十岁到来这一天》&lt;/a&gt;，以自己喜欢的方式再整理一下趁早精神，在这里分享给大家，也便于自己日后继续学习和实践。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;一-趁早精神:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;一、趁早精神&lt;/h5&gt;
+
+&lt;p&gt;&lt;strong&gt;核心精神&lt;/strong&gt;：有能力、有办法，按自己的意愿过一生。&lt;/p&gt;
+
+&lt;h5 id=&#34;二-写在三十岁到来这一天:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;二、写在三十岁到来这一天&lt;/h5&gt;
+
+&lt;h6 id=&#34;1-事业篇:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;1、事业篇&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;打工或者创业的本质无外乎向老板或客户出卖自己的有形或无形产品。通俗地说：大家都是出来卖的。既然出来卖的，就需要做到卖相好（个人外表）、敬业（多做事少抱怨）、不要嫌买货人（看在钱的份上适当妥协）&lt;/li&gt;
+&lt;li&gt;学习知识和锻炼身体，付出必定有回报&lt;/li&gt;
+&lt;li&gt;遵循达尔文主义（物竞天择 适者生存），需要不断地提升和进化自我&lt;/li&gt;
+&lt;li&gt;积极争取，快速行动，勇于承担沉没成本&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;2-感情篇:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;2、感情篇&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;谈恋爱的条件，就是让自己从精神到物质，从灵魂到肉体，因为有了对方都比从前的状态更好&lt;/li&gt;
+&lt;li&gt;爱对方的本尊，而不是你期待中的他或者她&lt;/li&gt;
+&lt;li&gt;爱情终会通过生育的方式转化成亲情&lt;/li&gt;
+&lt;li&gt;做好自身建设，时刻保留着再战斗的实力&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;3-生活篇:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;3、生活篇&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;趁着年轻，可以在不伤害健康，不触犯法律的基础上多应用“试错法”，搞清楚哪些东西才是真正适合自己的&lt;/li&gt;
+&lt;li&gt;正确估量自己的能量，自己跟自己比，满足就好&lt;/li&gt;
+&lt;li&gt;别人的任何选择和决定都有他自己的道理，尽量理解和不干涉。但如果伤害到你的心灵和财产，一定要干涉&lt;/li&gt;
+&lt;li&gt;面子是别人给的。别人会把面子给那些坚持表现出诚实、勇敢、勤奋和靠谱的人&lt;/li&gt;
+&lt;li&gt;在自己输的起的情况下，勇敢地做自己想做的事情&lt;/li&gt;
+&lt;li&gt;生活会有两种常态：痛苦的哲学家和快乐的猪&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h6 id=&#34;4-美容篇:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;4、美容篇&lt;/h6&gt;
+
+&lt;ul&gt;
+&lt;li&gt;外表和性格共同决定你的命运&lt;/li&gt;
+&lt;li&gt;腰围是黄金分割和女性体态婀娜的关键，是少女和大妈的分水岭。要拼死保持&lt;/li&gt;
+&lt;li&gt;单身情况下，需要随时保持在准备状态，说不定哪天转角会遇到爱&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;三-个人心得:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;三、个人心得&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;人先要靠自己成长起来，后面才可以依赖别人和向别人寻求帮助&lt;/li&gt;
+&lt;li&gt;要拥有自己独立的人格，成为自己价值理念的实践者&lt;/li&gt;
+&lt;li&gt;杨澜：“没有人有义务透过你邋遢的外表去发现你优秀的内在。”&lt;/li&gt;
+&lt;li&gt;伍绮诗《无声告白》主题：“我们终此一生，就是要摆脱他人的期待，找到真正的自己。”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;后续:cb46048c61183ac04fbc090e7ba42c8c&#34;&gt;后续&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果你对&lt;strong&gt;趁早精神&lt;/strong&gt;有更好更深的理解，可以发邮件至&lt;a href=&#34;zhaokaiju@foxmail.com&#34;&gt;zhaokaiju@foxmail.com&lt;/a&gt;或者直接关注我微信公众号（&lt;strong&gt;zhaokaiju&lt;/strong&gt;）分享给我，谢谢!&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>知行合一王阳明</title>
+            <link>http://www.zhaokaiju.com/2015/12/25/reading_wang_yang_ming/</link>
+            <pubDate>Fri, 25 Dec 2015 16:30:15 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/2015/12/25/reading_wang_yang_ming/</guid>
+            <description>
+
+&lt;h5 id=&#34;前言:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;前言&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;前段时间阅读完&lt;strong&gt;度阴山&lt;/strong&gt;写的&lt;a href=&#34;https://www.amazon.cn/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80%E7%8E%8B%E9%98%B3%E6%98%8E-%E5%BA%A6%E9%98%B4%E5%B1%B1/dp/B00KWRLPBE/ref=sr_1_1?ie=UTF8&amp;amp;qid=1462344897&amp;amp;sr=8-1&amp;amp;keywords=%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80%E7%8E%8B%E9%98%B3%E6%98%8E&#34;&gt;《知行合一王阳明》&lt;/a&gt;，以自己喜欢的形式将重点整理下来，今天在这里分享给大家，也方便自己日后继续研习和实践。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h5 id=&#34;一-阳明心学:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;一、阳明心学&lt;/h5&gt;
+
+&lt;p&gt;阳明心学集儒、释、道三家之大成，是500年来中国人最精妙的神奇智慧。&lt;/p&gt;
+
+&lt;h5 id=&#34;二-阳明心学核心理念:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;二、阳明心学核心理念&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;心即理&lt;/li&gt;
+&lt;li&gt;致良知&lt;/li&gt;
+&lt;li&gt;知行合一&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;三-心即理:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;三、心即理&lt;/h5&gt;
+
+&lt;p&gt;人人皆有良知，人对外物的认知是一种本能，心的本体就是&amp;rdquo;至善&amp;rdquo;。&lt;/p&gt;
+
+&lt;h5 id=&#34;四-致良知:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;四、致良知&lt;/h5&gt;
+
+&lt;p&gt;按良知的本能（能分是非恶善）指引去为人处世。&lt;/p&gt;
+
+&lt;h5 id=&#34;五-知行合一:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;五、知行合一&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;知&amp;rdquo;主要指人的道德意识和思想意念&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;行&amp;rdquo;主要指人的道德践履和实际行动&lt;/li&gt;
+&lt;li&gt;知中有行，行中有知，以知为行，知决定行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;六-朱熹-陆九渊-王阳明学说的区别:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;六、朱熹、陆九渊、王阳明学说的区别&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;朱熹：经书得到天理，然后去实行&lt;/li&gt;
+&lt;li&gt;陆九渊：静坐得到天理，然后去实行&lt;/li&gt;
+&lt;li&gt;王阳明：知行合一&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;七-心得:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;七、心得&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;通过研习阳明心学，我们可以去除内心的浮躁，练就强大的内心，开启与生俱来的正能量&lt;/li&gt;
+&lt;li&gt;无善无恶心之体，有善有恶意之动，知善知恶是良知，为善去恶是格物&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&#34;后记:8a60007abd7b49504e26bcc4f3e2f11b&#34;&gt;后记&lt;/h5&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果你对&lt;strong&gt;《知行合一王阳明》&lt;/strong&gt;有更多更好的理解或心得，请发邮件至&lt;a href=&#34;zhaokaiju@foxmail.com&#34;&gt;zhaokaiju@foxmail.com&lt;/a&gt;或者直接关注我微信公众号（&lt;strong&gt;zhaokaiju&lt;/strong&gt;）分享给我，谢谢!&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

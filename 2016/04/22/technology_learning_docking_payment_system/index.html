@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <base href="http://www.zhaokaiju.com/">
+  <title>浅谈对接支付系统 - 月光の云海</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="keywords" content="支付系统,浅谈对接支付系统,">
+<meta name="description" content="前言 工作中平台需要对接不同厂家的支付系统，以自己喜欢的方式整理好自己对，对接支付系统的理解，并形成相应的文档，在这里分享给大家，也便于自己日">
+<meta name="author" content="zhaokaiju">
+<meta name="publisher" content="zhaokaiju">
+<meta name="generator" content="http://gohugo.io/"/>
+
+<meta itemprop="name" content="浅谈对接支付系统 - 月光の云海">
+<meta itemprop="description" content="前言 工作中平台需要对接不同厂家的支付系统，以自己喜欢的方式整理好自己对，对接支付系统的理解，并形成相应的文档，在这里分享给大家，也便于自己日">
+<meta itemprop="image" content="http://www.zhaokaiju.com/public/zhaokaiju.jpg">
+
+<meta property="og:title" content="浅谈对接支付系统 - 月光の云海" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.zhaokaiju.com/2016/04/22/technology_learning_docking_payment_system/" />
+<meta property="og:image" content="http://www.zhaokaiju.com/public/zhaokaiju.jpg" />
+<meta property="og:description" content="前言 工作中平台需要对接不同厂家的支付系统，以自己喜欢的方式整理好自己对，对接支付系统的理解，并形成相应的文档，在这里分享给大家，也便于自己日">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@zhaokaiju">
+<meta name="twitter:title" content="浅谈对接支付系统 - 月光の云海">
+<meta name="twitter:description" content="前言 工作中平台需要对接不同厂家的支付系统，以自己喜欢的方式整理好自己对，对接支付系统的理解，并形成相应的文档，在这里分享给大家，也便于自己日">
+<meta name="twitter:creator" content="@zhaokaiju">
+<meta name="twitter:image" content="http://www.zhaokaiju.com/public/zhaokaiju.jpg">
+
+<meta name="360-site-verification" content="185adecc4ef916bc0749adf75e78b01f" />
+
+  <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
+  <link rel="canonical" href="http://www.zhaokaiju.com/2016/04/22/technology_learning_docking_payment_system/">
+  <link rel='shortlink' href="http://www.zhaokaiju.com/2016/04/22/technology_learning_docking_payment_system/"/>
+  <link rel="shortcut icon" href="http://www.zhaokaiju.com/public/favicon.ico"/>
+  
+<link rel="stylesheet" id="human-style-css" href="http://www.zhaokaiju.com/wp-content/themes/hueman/style.css" type="text/css" media="all"/>
+<link rel="stylesheet" id="human-style-css2" href="http://www.zhaokaiju.com/wp-content/themes/hueman-child/style.css" type="text/css" media="all"/>
+<link rel="stylesheet" id="responsive-css" href="http://www.zhaokaiju.com/wp-content/themes/hueman/responsive.css" type="text/css" media="all"/>
+<link rel="stylesheet" id="font-awesome-css" href="http://www.zhaokaiju.com/wp-content/themes/hueman/fonts/font-awesome.min.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="http://www.zhaokaiju.com/public/highlight/styles/github.css">
+<script src="http://www.zhaokaiju.com/public/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<link rel="stylesheet" id="human-style-css3" href="http://www.zhaokaiju.com/wp-content/themes/hueman-child/user.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="public/font/hack/css/hack.min.css">
+
+<script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="wp-content/themes/hueman/js/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="wp-content/themes/hueman/js/scripts.js"></script>
+<script type="text/javascript" src="assets/picturefill/picturefill.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.matchHeight-min.js"></script>
+<script type="text/javascript" async defer src="assets/js/myblog.js"></script>
+
+
+</head>
+
+<body class="single single-post single-format-standard col-3cm full-width topbar-enabled chrome">
+<div id="wrapper">
+  <header id="header">
+
+  <nav class="nav-container group" id="nav-topbar">
+    <div class="nav-toggle"><i class="fa fa-bars"></i></div>
+    <div class="nav-text"></div>
+    <div class="nav-wrap container">
+      <a rel="nofollow" href="http://www.zhaokaiju.com/" class="nav-cs-icon">
+        <img width="40" height="40" src="http://www.zhaokaiju.com/public/zhaokaiju.jpg" alt="zhaokaiju" title="Home">
+      </a>
+      <ul id="menu-default-menu" class="nav container-inner group">
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/">首页</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/">技术学习</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%97%85%E8%A1%8C%E8%BF%90%E5%8A%A8/">旅行运动</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%80%9D%E8%80%83%E6%84%9F%E6%82%9F/">思考感悟</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%89%8B%E8%89%BA%E5%AD%A6%E4%B9%A0/">手艺学习</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E7%BB%BC%E5%90%88%E5%AD%A6%E4%B9%A0/">综合学习</a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/post/">归档</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/about/">关于我</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/feed.xml" type="application/rss+xml" target="_blank">订阅</a>
+        </li>
+        <li class="menu-item menu-item-type-post_type menu-item-text">
+        
+        </li>
+      </ul>
+    </div>
+
+    <div class="container">
+       
+      
+    </div>
+    
+
+  </nav>
+  
+
+  <div class="container group">
+    <div class="container-inner">
+
+      <div class="group pad">
+
+        <div class="group pad">
+          <h1 class="site-title">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/" rel="home">
+              <img style="border-radius: 50%;width:72px;height:72px;margin:0 auto;" alt="zhaokaiju" src="http://www.zhaokaiju.com/public/zhaokaiju.jpg"></img>
+              月光の云海
+            </a>
+          </h1>
+          <p class="site-description"> 精进自己，分享他人！ </p>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+  
+
+</header>
+
+
+
+  <div class="container" id="page">
+    <div class="container-inner">
+      <div class="main">
+        <div class="main-inner group">
+          <section class="content">
+            <div class="page-title pad group">
+              <ul class="meta-single group">
+                
+                <li class="category">
+                  <a href="http://www.zhaokaiju.com/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" rel="category tag">技术学习</a>
+                </li>
+                
+              </ul>
+            </div>
+
+            <div class="pad group">
+
+              <article
+                  class="post type-post status-publish format-standard has-post-thumbnail hentry category-australien tag-bondi-beach tag-city2surf tag-sydney">
+                <div class="post-inner group">
+
+                  <h1 class="post-title">浅谈对接支付系统</h1>
+
+                  <p class="post-byline">
+                    by  · 2016年04月22日 · 1218 Words ·
+                    ~3min reading time 
+                  </p>
+
+                  <div class="clear"></div>
+
+                  <div class="entry">
+                    <div class="entry-inner">
+                      
+                      
+
+<h4 id="前言:c96a52ac494cc06f8613655b64c416a4">前言</h4>
+
+<blockquote>
+<p>工作中平台需要对接不同厂家的支付系统，以自己喜欢的方式整理好自己对，对接支付系统的理解，并形成相应的文档，在这里分享给大家，也便于自己日后继续学习。</p>
+</blockquote>
+
+<h5 id="一-支付系统交易方式:c96a52ac494cc06f8613655b64c416a4">一、支付系统交易方式</h5>
+
+<p>支付系统的交易方式分为以下两种：</p>
+
+<ol>
+<li>同步交易</li>
+<li>异步交易</li>
+</ol>
+
+<h6 id="1-同步交易:c96a52ac494cc06f8613655b64c416a4">1、同步交易</h6>
+
+<p>客户端发起交易请求，服务端即时响应，并返回响应的结果。</p>
+
+<p><strong>优点：</strong></p>
+
+<ul>
+<li>实时性强</li>
+<li>易于理解、开发和对接</li>
+</ul>
+
+<p><strong>缺点：</strong></p>
+
+<ul>
+<li>实现的要求高（对网络、软件等要求高，不太现实）</li>
+<li>容错性差</li>
+<li>不易于维护</li>
+<li>并发能力不足</li>
+</ul>
+
+<h6 id="2-异步交易:c96a52ac494cc06f8613655b64c416a4">2、异步交易</h6>
+
+<p>客户端发起交易请求，服务端即时响应其请求的是否成功，至于交易处理结果通过客户端请求时发送的URL进行规则性通知，从而将响应的结果通知到客户端。</p>
+
+<p><strong>优点：</strong></p>
+
+<ul>
+<li>对网络、软件等要求相对同步交易要低不少</li>
+<li>容错性高</li>
+<li>开发灵活</li>
+<li>易于维护</li>
+<li>便于开发出并发能力好的软件</li>
+</ul>
+
+<p><strong>缺点：</strong></p>
+
+<ul>
+<li>实时性相比同步交易来说要差一些</li>
+<li>开发难度较高</li>
+</ul>
+
+<h5 id="二-对接支付系统:c96a52ac494cc06f8613655b64c416a4">二、对接支付系统</h5>
+
+<h6 id="1-对接支付系统的简化图:c96a52ac494cc06f8613655b64c416a4">1、对接支付系统的简化图</h6>
+
+<p><img width="72%"  src="http://7xnflt.com1.z0.glb.clouddn.com/image%2Fblog%2Ftechnology%2Ftechnology_learning_docking_payment_system1.jpg"/></p>
+
+<h6 id="2-对接支付系统的基本策略:c96a52ac494cc06f8613655b64c416a4">2、对接支付系统的基本策略</h6>
+
+<p><strong>基本策略：</strong></p>
+
+<ul>
+<li>金融性交易采用异步交易方式</li>
+<li>非金融性交易采用同步交易方式</li>
+</ul>
+
+<p><strong>金融性交易</strong>：</p>
+
+<ul>
+<li>简单的理解就是和钱相关的交易（如支付）</li>
+</ul>
+
+<p><strong>非金融性交易</strong>：</p>
+
+<ul>
+<li>简单的理解就是和钱没有直接关系的交易（如实名认证）</li>
+</ul>
+
+<h6 id="3-对接支付系统过程:c96a52ac494cc06f8613655b64c416a4">3、对接支付系统过程</h6>
+
+<p>交易请求，存在以下三种状态：</p>
+
+<ul>
+<li>成功</li>
+<li>失败</li>
+<li>未知（un-know）状态</li>
+</ul>
+
+<p>通过API对接第三方支付系统，交易请求时，根据第三方支付系统返回状态进行相应处理：</p>
+
+<ul>
+<li>返回成功状态：平台处理交易请求成功的业务逻辑。</li>
+<li>返回失败状态：平台处理交易请求失败的业务逻辑。</li>
+<li>返回未知（un-know）状态：平台可以通过交易订单号，主动通过API查询第三方支付系统中该交易的状态，可以制定主动查询的规则（如每隔一段时间，查询一次，如果还是未知状态，则进行每隔一段时间查询，直到超过平台规定的最大查询次数，平台再默认将其设置为失败状态[查询规则如： 最大查询次数为3次，第一次延迟1分钟查询，第二次延迟3分钟再查询，第三次延迟5分钟查询]）。</li>
+</ul>
+
+<p>如果第三方支付系统既提供同步交易又提供异步交易接口，我们可以按照对接支付系统的基本策略（金融性交易采用异步交易方式，非金融性交易采用同步交易方式）去实现。</p>
+
+<p>如果第三方支付系统只提供同步交易的话，对于金融性交易我们需要自己模拟实现异步交易的方式（先使用同步交易方式请求，如果结果为未知状态，主动通过API查询第三方支付系统中该交易的状态，再根据返回状态处理相应的业务逻辑。可以根据平台的自身业务制定根据查询规则处理该交易）。</p>
+
+<h5 id="三-对支付系统的期待:c96a52ac494cc06f8613655b64c416a4">三、对支付系统的期待</h5>
+
+<p>第三方支付系统对接API没有统一的标准，差异化大。有些支付系统在金融性交易API中没有提供异步交易的方式，导致对接开发难度大。</p>
+
+<p><strong>对支付系统的期待</strong>：</p>
+
+<ul>
+<li>形成统一的API标准，各厂商的API差异化尽可能的小</li>
+<li>第三方支付系统对接API既提供同步交易的方式又提供异步交易的方式，方便别的平台灵活对接</li>
+</ul>
+
+<h5 id="后续:c96a52ac494cc06f8613655b64c416a4">后续</h5>
+
+<blockquote>
+<p>如果你有更多更好的<strong>对接支付系统</strong>方法和经验，可以通过发邮件至zhaokaiju@foxmail.com或者直接关注我微信公众号（<strong>zhaokaiju</strong>）分享给我，谢谢!</p>
+</blockquote>
+
+                      
+                    </div>
+                    <div style="border: 1px dashed #e0e0e0; padding: 10px 10px 10px 10px; background-color: #fffeee; background-repeat: no-repeat; background-attachment: scroll; background-position: 1% 50%; -moz-background-size: auto auto; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+                        <div style="float:left;margin-top:0px;">
+                        <img src="http://www.zhaokaiju.com/public/qrcode.jpg" width="129px" height="129px"/>
+                        <div style="text-align:center;">微信扫一扫交流</div>
+                        </div>
+                        <div>
+                            <p style="margin-top:0px;">作者：<a target="_blank" href="http://zhaokaiju.com/">月光の云海</a>
+                            <br />微信关注：zhaokaiju
+                            <br />个人网站：<a target="_blank" href="http://zhaokaiju.com/">http://www.zhaokaiju.com/</a>
+                            <br />
+                            文章版权归本人所有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利。 </p>
+                        </div>
+                    </div>
+
+                    <div class="clear"></div>
+                  </div>
+                  
+
+                </div>
+                
+              </article>
+              
+
+              <div class="clear"></div>
+
+              <p class="post-tags">
+                <span>Tags:</span>
+                
+                <a rel="tag" href="http://www.zhaokaiju.com/tags/%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F">支付系统</a>
+                
+              </p>
+              
+              
+            </div>
+
+
+          </section>
+          <div class="sidebar s1">
+  <a class="sidebar-toggle" title="Expand Sidebar"><i class="fa icon-sidebar-toggle"></i></a>
+  <div class="sidebar-content">
+    <div class="sidebar-top group">
+      <p>关注:</p>
+      <ul class="social-links">
+    
+    
+</ul>
+
+    </div>
+    <div class="widget qrcode">
+    <img src="http://www.zhaokaiju.com/public/qrcode.jpg" alt="qrcode" width="172px" height="172px"/>
+    <p>微信扫一扫：<br/> 关注微信公众号：<br/>zhaokaiju</p>
+</div>
+
+    <ul class="post-nav group">
+      <li class="next">
+        
+        <a href="http://www.zhaokaiju.com/2016/03/13/thinking_personal_time_management_practice/" rel="next">
+          <i class="fa fa-chevron-right"></i>
+          <strong>Next post</strong>
+          <span>个人时间管理实践</span>
+        </a>
+        
+      </li>
+      <li class="previous">
+        
+      </li>
+    </ul>
+    
+  </div>
+  
+</div>
+
+          <div class="sidebar s2">
+  <a class="sidebar-toggle" title="Expand Sidebar"><i class="fa icon-sidebar-toggle"></i></a>
+  <div class="sidebar-content">
+    <div class="sidebar-top group">
+      <p>更多</p>
+    </div>
+    <div id="categories-2" class="widget widget_categories"><h3>分类</h3>
+      <ul>
+        
+          <li class="cat-item cat-item-1">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+          </li>
+        
+          <li class="cat-item cat-item-1">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/">技术学习</a>
+          </li>
+        
+          <li class="cat-item cat-item-1">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%97%85%E8%A1%8C%E8%BF%90%E5%8A%A8/">旅行运动</a>
+          </li>
+        
+          <li class="cat-item cat-item-1">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%80%9D%E8%80%83%E6%84%9F%E6%82%9F/">思考感悟</a>
+          </li>
+        
+          <li class="cat-item cat-item-1">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%89%8B%E8%89%BA%E5%AD%A6%E4%B9%A0/">手艺学习</a>
+          </li>
+        
+          <li class="cat-item cat-item-1">
+            <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E7%BB%BC%E5%90%88%E5%AD%A6%E4%B9%A0/">综合学习</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer id="footer">
+
+  <nav class="nav-container group" id="nav-footer">
+    <div class="nav-toggle"><i class="fa fa-bars"></i></div>
+    <div class="nav-text"></div>
+    <div class="nav-wrap">
+      <ul id="menu-default-menu-1" class="nav container group">
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/">首页</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/">技术学习</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%97%85%E8%A1%8C%E8%BF%90%E5%8A%A8/">旅行运动</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%80%9D%E8%80%83%E6%84%9F%E6%82%9F/">思考感悟</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E6%89%8B%E8%89%BA%E5%AD%A6%E4%B9%A0/">手艺学习</a>
+        </li>
+        
+        <li class="menu-item menu-item-type-post_type menu-item-object-page">
+          <a rel="nofollow" href="http://www.zhaokaiju.com/categories/%E7%BB%BC%E5%90%88%E5%AD%A6%E4%B9%A0/">综合学习</a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+  
+
+  <section class="container" id="footer-bottom">
+    <div class="container-inner">
+      <a id="back-to-top" href="#"><i class="fa fa-angle-up"></i></a>
+      <div class="pad group">
+		 <div id="copyright" align="center">
+            <p>Copyright (c) 2015-2016. zhaokaiju All rights reserved.</p>
+          </div>
+      </div>
+
+    </div>
+    
+  </section>
+  
+
+</footer>
+
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-10147768-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
+

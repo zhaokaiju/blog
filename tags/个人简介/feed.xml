@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>个人简介 on 月光の云海</title>
+        <link>http://www.zhaokaiju.com/tags/%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B/</link>
+        <language>zh-CN</language>
+        <author>zhaokaiju</author>
+        <rights>Copyright (c) 2015-2016, zhaokaiju all rights reserved.</rights>
+        <updated>Sun, 18 Oct 2015 08:55:31 &#43;0800</updated>
+        
+        <item>
+            <title>关于我</title>
+            <link>http://www.zhaokaiju.com/about/</link>
+            <pubDate>Sun, 18 Oct 2015 08:55:31 &#43;0800</pubDate>
+            <author>CoderZh</author>
+            <guid>http://www.zhaokaiju.com/about/</guid>
+            <description>
+
+&lt;p class=&#34;message&#34;&gt;
+大家好，我叫月光の云海，是一名互联网从业者，现在在做Java相关软件的开发。
+&lt;/p&gt;
+
+&lt;p&gt;Act Different, Think Different, Make a Difference!&lt;/p&gt;
+
+&lt;video id=&#34;video&#34; width=&#34;320&#34; height=&#34;240&#34; controls=&#34;controls&#34; autoplay&gt;
+&lt;source id=&#34;ogv&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/video%2Fblog%2Faboutme%2Fapple_think_different.ogg&#34; type=&#34;video/ogg&#34; /&gt; 
+&lt;source id=&#34;ogv&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/video%2Fblog%2Faboutme%2Fapple_think_different.webm&#34; type=&#34;video/webm&#34; /&gt;
+&lt;source id=&#34;mp4&#34; src=&#34;http://7xnflt.com1.z0.glb.clouddn.com/video%2Fblog%2Faboutme%2Fapple_think_different.mp4&#34; type=&#34;video/mp4&#34;&gt;
+ &lt;/video&gt;
+
+&lt;h3 id=&#34;个人信息:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;个人信息&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;微信公众号：zhaokaiju&lt;/li&gt;
+&lt;li&gt;Email：zhaokaiju@foxmail.com&lt;/li&gt;
+&lt;li&gt;QQ：3056997528&lt;/li&gt;
+&lt;li&gt;开源中国博客：&lt;a href=&#34;http://my.oschina.net/zhaokaiju/blog&#34;&gt;http://my.oschina.net/zhaokaiju/blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;个人网站：&lt;a href=&#34;http://www.zhaokaiju.com&#34;&gt;http://www.zhaokaiju.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Github:  &lt;a href=&#34;https://github.com/zhaokaiju&#34;&gt;https://github.com/zhaokaiju&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;个人经历:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;个人经历&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2008-2012 湖南工业大学电气系&lt;/li&gt;
+&lt;li&gt;2012.7.9 - 2015.10.21 hikvision&lt;/li&gt;
+&lt;li&gt;2015.10.21 - 2016.1.4 阅读、远行、学习驾驶、学习摄影、跑步、学习厨艺&lt;/li&gt;
+&lt;li&gt;2016.1.5 - 至今 茂实网络&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;技能清单:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;技能清单&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;后端开发：Java&lt;/li&gt;
+&lt;li&gt;开发工具：IntelliJ IDEA&lt;/li&gt;
+&lt;li&gt;数据库相关：MySQL&lt;/li&gt;
+&lt;li&gt;版本管理、项目管理、构建工具：Svn/Git/Maven&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;个人爱好:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;个人爱好&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;阅读&lt;/li&gt;
+&lt;li&gt;瑜伽&lt;/li&gt;
+&lt;li&gt;铁人三项（游泳、自行车、跑步）[正在培养中的爱好]&lt;/li&gt;
+&lt;li&gt;厨艺&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
